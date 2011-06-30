@@ -100,15 +100,12 @@ class tx_cms_BackendLayout {
 	 * @return array|null  $backendLayout
 	 */
 	public function getSelectedBackendLayout($id) {
-		$rootline = t3lib_BEfunc::BEgetRootLine($id);
+		$rootline = t3lib_BEfunc::BEgetRootLine($id,'',true);
 		$backendLayoutUid = NULL;
 
 		for ($i = count($rootline); $i > 0; $i--) {
-			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-				'uid, backend_layout, backend_layout_next_level',
-				'pages',
-				'uid=' . intval($rootline[$i]['uid'])
-			);
+			$page = t3lib_BEfunc::getRecordWSOL('pages',intval($rootline[$i]['uid']),'uid,backend_layout,backend_layout_next_level');
+
 			$selectedBackendLayout = intval($page['backend_layout']);
 			$selectedBackendLayoutNextLevel = intval($page['backend_layout_next_level']);
 			if ($selectedBackendLayout != 0 && $page['uid'] == $id) {
