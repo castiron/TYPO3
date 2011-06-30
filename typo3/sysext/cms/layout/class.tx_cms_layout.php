@@ -398,14 +398,15 @@ class tx_cms_layout extends recordList {
 	 * @return mixed Uid of the backend layout record or NULL if no layout should be used
 	 */
 	function getSelectedBackendLayoutUid($id) {
-		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('backend_layout', 'pages', 'uid=' . $id);
+		$page = t3lib_BEfunc::getRecordWSOL('pages',$id,'backend_layout');
 		$backendLayoutUid = intval($page['backend_layout']);
 		if ($backendLayoutUid == -1) {
 				// if it is set to "none" - don't use any
 			$backendLayoutUid = NULL;
 		} else if ($backendLayoutUid == 0) {
 				// if it not set check the rootline for a layout on next level and use this
-			$rootline = t3lib_BEfunc::BEgetRootLine($id);
+			$rootline = t3lib_BEfunc::BEgetRootLine($id,'',true);
+
 			for ($i = count($rootline) - 2; $i > 0; $i--) {
 				$backendLayoutUid = intval($rootline[$i]['backend_layout_next_level']);
 				if ($backendLayoutUid > 0) {
