@@ -521,7 +521,7 @@ class tslib_menu {
 
 								//Add versioning overlay for current page (to respect workspaces)
 							if (is_array($row)) {
-							    $this->sys_page->versionOL('pages', $row, true);
+							    $this->sys_page->versionOL('pages', $row);
 							}
 
 								// Add external MP params, then the row:
